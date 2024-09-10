@@ -35,3 +35,8 @@ def about(req):
 def cat_index(req):
     cats = Cat.objects.all() # look familiar?
     return render(req, 'cats/index.html', {'cats': cats})
+
+# Define cat detail view function
+def cat_detail(req, cat_id):
+    cat = Cat.objects.get(id=cat_id)
+    return render(req, 'cats/detail.html', {'cat': cat})
