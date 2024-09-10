@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # Import HttpResponse to send text-based responses
-from django.http import HttpResponse
+# from django.http import HttpResponse
 
 #Temporary import of cat data
 class Cat:
@@ -22,7 +22,8 @@ cats = [
 # Define home view function
 def home(req):
     # Send a simple HTML response
-    return HttpResponse('<h1>Hello ᓚᘏᗢ</h1>')
+    # return HttpResponse('<h1>Hello ᓚᘏᗢ</h1>')
+    return render(req, 'home.html')
 
 # Define about view function
 def about(req):
