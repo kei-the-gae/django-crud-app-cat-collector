@@ -4,9 +4,9 @@ from django.http import HttpResponse
 
 # Create your views here.
 # Define home view function
-def home(request):
+def home(req):
     # Send a simple HTML response
     return HttpResponse('<h1>Hello ᓚᘏᗢ</h1>')
 
-def about(request):
-    return HttpResponse('<h1>About the CatCollector</h1>')
+def about(req):
+    return render(req, 'about.html')
