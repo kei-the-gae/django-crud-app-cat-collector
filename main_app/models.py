@@ -42,6 +42,9 @@ class Cat(models.Model):
         # Use the 'reverse' function to dynamically find the URL for viewing this cat's details
         return reverse('cat-detail', kwargs={'cat_id': self.id})
 
+    def fed_for_today(self):
+        return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)
+
 # One-to-many relationship:
 class Feeding(models.Model):
     date = models.DateField('Feeding date')
