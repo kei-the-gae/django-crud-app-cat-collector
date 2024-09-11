@@ -4,10 +4,12 @@ from django.shortcuts import render, redirect
 # Import CreateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
 # Import Cat model
 from .models import Cat, Toy
 from .forms import FeedingForm
-from django.contrib.auth.views import LoginView
 
 #Temporary import of cat data
 # class Cat:
@@ -79,6 +81,31 @@ def associate_toy(req, cat_id, toy_id):
 def remove_toy(req, cat_id, toy_id):
     Cat.objects.get(id=cat_id).toys.remove(toy_id)
     return redirect('cat-detail', cat_id=cat_id)
+
+def signup(req):
+    error_message = ''
+    if req.method == 'POST':
+        # This is how to create a 'user' form object that includes the data from the browser
+        form = UserCreationForm(req.POST)
+        if form.is_valid():
+            # This will add the user to the database
+            user = form.save()
+            # This is how we log a user in
+            login(req, user)
+            return redirect('cat-index')
+        else:
+            error_message = 'Invalid sign up - try again'
+    # A bad POST or a GET request, so render signup.html with an empty form
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(req, 'signup.html', context)
+    # Same as:
+    # return render(
+    #     request,
+    #     'signup.html',
+    #     {'form': form, 'error_message': error_message}
+    # )
+
 
 # Define create class-based views (CBV) class
 class CatCreate(CreateView):
