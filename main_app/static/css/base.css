@@ -271,7 +271,6 @@ nav li {
     }
 }
 
-/* These button styles currently do not work */
 #logout-form button {
     text-decoration: none;
     color: var(--text-color);

@@ -6,6 +6,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 # Import Cat model
 from .models import Cat, Toy
@@ -41,8 +43,11 @@ def about(req):
     return render(req, 'about.html')
 
 # Define cat index view function
+@login_required
 def cat_index(req):
-    cats = Cat.objects.all() # look familiar?
+    cats = Cat.objects.filter(user=req.user) # look familiar?
+    # You could also retrieve the logged in user's cats like this:
+    # cats = request.user.cat_set.all()
     return render(req, 'cats/index.html', {'cats': cats})
 
 # Define cat detail view function
@@ -108,7 +113,7 @@ def signup(req):
 
 
 # Define create class-based views (CBV) class
-class CatCreate(CreateView):
+class CatCreate(LoginRequiredMixin, CreateView):
     model = Cat
     # fields = '__all__'
     fields = ['name', 'breed', 'description', 'age']
@@ -121,30 +126,30 @@ class CatCreate(CreateView):
     success_url = '/cats/'
 
 # Define update CBV class
-class CatUpdate(UpdateView):
+class CatUpdate(LoginRequiredMixin, UpdateView):
     model = Cat
     # Let's disallow the renaming of a cat by excluding the name field!
     fields = ['breed', 'description', 'age']
 
 # Define delete CBV class
-class CatDelete(DeleteView):
+class CatDelete(LoginRequiredMixin, DeleteView):
     model = Cat
     success_url = '/cats/'
 
-class ToyCreate(CreateView):
+class ToyCreate(LoginRequiredMixin, CreateView):
     model = Toy
     fields = '__all__'
 
-class ToyList(ListView):
+class ToyList(LoginRequiredMixin, ListView):
     model = Toy
 
-class ToyDetail(DetailView):
+class ToyDetail(LoginRequiredMixin, DetailView):
     model = Toy
 
-class ToyUpdate(UpdateView):
+class ToyUpdate(LoginRequiredMixin, UpdateView):
     model = Toy
     fields = ['name', 'color']
 
-class ToyDelete(DeleteView):
+class ToyDelete(LoginRequiredMixin, DeleteView):
     model = Toy
     success_url = '/toys/'
