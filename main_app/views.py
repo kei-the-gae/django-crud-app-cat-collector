@@ -85,6 +85,12 @@ class CatCreate(CreateView):
     model = Cat
     # fields = '__all__'
     fields = ['name', 'breed', 'description', 'age']
+    # This inherited method is called when a valid cat form is being submitted
+    def form_valid(self, form):
+        # Assign the logged in user (self.request.user)
+        form.instance.user = self.request.user  # form.instance is the cat
+        # Let the CreateView do its job as usual
+        return super().form_valid(form)
     success_url = '/cats/'
 
 # Define update CBV class
