@@ -1,6 +1,8 @@
 from django.shortcuts import render
 # Import HttpResponse to send text-based responses
 # from django.http import HttpResponse
+# Import CreateView
+from django.views.generic.edit import CreateView
 # Import Cat model
 from .models import Cat
 
@@ -40,3 +42,10 @@ def cat_index(req):
 def cat_detail(req, cat_id):
     cat = Cat.objects.get(id=cat_id)
     return render(req, 'cats/detail.html', {'cat': cat})
+
+# Define create class-based views (CBV) class
+class CatCreate(CreateView):
+    model = Cat
+    fields = '__all__'
+    # fields = ['name', 'breed', 'description', 'age']
+    success_url = '/cats/'
