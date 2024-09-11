@@ -2,7 +2,7 @@ from django.shortcuts import render
 # Import HttpResponse to send text-based responses
 # from django.http import HttpResponse
 # Import CreateView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Import Cat model
 from .models import Cat
 
@@ -48,4 +48,15 @@ class CatCreate(CreateView):
     model = Cat
     fields = '__all__'
     # fields = ['name', 'breed', 'description', 'age']
+    success_url = '/cats/'
+
+#Define update CBV class
+class CatUpdate(UpdateView):
+    model = Cat
+    # Let's disallow the renaming of a cat by excluding the name field!
+    fields = ['breed', 'description', 'age']
+    
+#Define delete CBV class
+class CatDelete(DeleteView):
+    model = Cat
     success_url = '/cats/'
