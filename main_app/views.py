@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 # Import CreateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Import Cat model
-from .models import Cat
+from .models import Cat, Toy
 from .forms import FeedingForm
 
 #Temporary import of cat data
@@ -71,13 +71,17 @@ class CatCreate(CreateView):
     # fields = ['name', 'breed', 'description', 'age']
     success_url = '/cats/'
 
-#Define update CBV class
+# Define update CBV class
 class CatUpdate(UpdateView):
     model = Cat
     # Let's disallow the renaming of a cat by excluding the name field!
     fields = ['breed', 'description', 'age']
 
-#Define delete CBV class
+# Define delete CBV class
 class CatDelete(DeleteView):
     model = Cat
     success_url = '/cats/'
+
+class ToyCreate(CreateView):
+    model = Toy
+    fields = '__all__'
