@@ -44,12 +44,14 @@ def cat_index(req):
 def cat_detail(req, cat_id):
     # Instantiate cat to be rendered in the template
     cat = Cat.objects.get(id=cat_id)
+    toys = Toy.objects.all()
     # Instantiate FeedingForm
     feeding_form = FeedingForm()
     return render(req, 'cats/detail.html', {
         # Include the cat and feeding_form in the context
         'cat': cat,
-        'feeding_form': feeding_form
+        'feeding_form': feeding_form,
+        'toys': toys
     })
 
 # Define add feeding view function
@@ -64,12 +66,16 @@ def add_feeding(req, cat_id):
         new_feeding.save()
     return redirect('cat-detail', cat_id=cat_id)
 
+def associate_toy(req, cat_id, toy_id):
+    # Note that you can pass a toy's id instead of the whole object
+    Cat.objects.get(id=cat_id).toys.add(toy_id)
+    return redirect('cat-detail', cat_id=cat_id)
 
 # Define create class-based views (CBV) class
 class CatCreate(CreateView):
     model = Cat
-    fields = '__all__'
-    # fields = ['name', 'breed', 'description', 'age']
+    # fields = '__all__'
+    fields = ['name', 'breed', 'description', 'age']
     success_url = '/cats/'
 
 # Define update CBV class

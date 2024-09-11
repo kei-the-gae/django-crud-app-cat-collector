@@ -10,11 +10,24 @@ MEALS = (
 )
 
 # Create your models here.
+# Many-to-many relationships:
+class Toy(models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('toy-detail', kwargs={'pk': self.id})
+
 class Cat(models.Model):
     name = models.CharField(max_length=100)
     breed = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     age = models.IntegerField()
+    # Add the M:M relationship
+    toys = models.ManyToManyField(Toy)
 
 # Good practice: override the __str__ method in a model so they print in a more helpful way
     def __str__(self):
@@ -44,14 +57,3 @@ class Feeding(models.Model):
     # Define the default order of feedings
     class Meta:
         ordering = ['-date']  # This line makes the newest feedings appear first
-
-# Many-to-many relationships:
-class Toy(models.Model):
-    name = models.CharField(max_length=50)
-    color = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('toy-detail', kwargs={'pk': self.id})
