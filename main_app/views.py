@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView
 # Import Cat model
 from .models import Cat, Toy
 from .forms import FeedingForm
+from django.contrib.auth.views import LoginView
 
 #Temporary import of cat data
 # class Cat:
@@ -26,10 +27,12 @@ from .forms import FeedingForm
 
 # Create your views here.
 # Define home view function
-def home(req):
-    # Send a simple HTML response
-    # return HttpResponse('<h1>Hello ᓚᘏᗢ</h1>')
-    return render(req, 'home.html')
+# def home(req):
+#     # Send a simple HTML response
+#     # return HttpResponse('<h1>Hello ᓚᘏᗢ</h1>')
+#     return render(req, 'home.html')
+class Home(LoginView):
+    template_name = 'home.html'
 
 # Define about view function
 def about(req):

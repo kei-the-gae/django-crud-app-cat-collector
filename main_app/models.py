@@ -1,6 +1,8 @@
 from django.db import models
 # Import the reverse function
 from django.urls import reverse
+from datetime import date
+from django.contrib.auth.models import User
 
 # Tuple of 2-tuples to represent meal times
 MEALS = (
@@ -28,6 +30,8 @@ class Cat(models.Model):
     age = models.IntegerField()
     # Add the M:M relationship
     toys = models.ManyToManyField(Toy)
+    # Add the foreign key linking to a user instance
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 # Good practice: override the __str__ method in a model so they print in a more helpful way
     def __str__(self):
